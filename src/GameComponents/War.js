@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import styled from "styled-components";
+//import styled from "styled-components";
 import {
   DisplayHand,
   DisplayCardsDiv,
@@ -21,7 +21,7 @@ let winner = "no one.";
 function War() {
   const [deckId, setDeckId] = useState("");
   const [shuffled, setShuffled] = useState("");
-  const [cardsRemaining, setCardsRemaining] = useState("");
+//  const [cardsRemaining, setCardsRemaining] = useState("");
   const [, updateRender] = useState();
   const hiddenCardImage = CardsOnFire;
   var curDeck;
@@ -38,7 +38,7 @@ function War() {
 
       setDeckId(result.data.deck_id);
       setShuffled(result.data.shuffled);
-      setCardsRemaining(result.data.remaining);
+//      setCardsRemaining(result.data.remaining);
       curDeck = result.data.deck_id;
       //clear the cards in the player and dealer hands
       player_pile = [];
@@ -101,15 +101,20 @@ function War() {
     var i;
     for(i = 0; i < 3; i++)//flip 3 cards face down
     {
-      player_card.push(player_pile.pop());
-      player_card[player_card.length-1].imageURL = hiddenCardImage;
-
-      dealer_card.push(dealer_pile.pop());
-      dealer_card[dealer_card.length-1].imageURL = hiddenCardImage;
+      if(player_pile.length > 1){
+        player_card.push(player_pile.pop());
+        player_card[player_card.length-1].imageURL = hiddenCardImage;
+      }
+    }
+    for(i = 0; i < 3; i++)//flip 3 cards face down
+    {
+      if(dealer_pile.length > 1){
+        dealer_card.push(dealer_pile.pop());
+        dealer_card[dealer_card.length-1].imageURL = hiddenCardImage;
+      }
     }
     player_card.push(player_pile.pop());
     dealer_card.push(dealer_pile.pop());
-//    dealer_card.imageURL = hiddenCardImage;
     await sleepDelay(1);
     updateRender(n => !n);
     computeFlipWinner();
